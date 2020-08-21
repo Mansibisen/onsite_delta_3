@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    html{
+        background-color: #ccc;
+    }
+    #add{
+            text-align: center;
+            margin-top: 200px;
+            margin-bottom: 200px;
+            font-size: 40px;
+        }
+        #search{
+            text-align: center;
+            
+            margin-bottom: 200px;
+            font-size: 40px;
+        }
+        #text{
+            width:50%;
+            padding: 12px 20px;
+            border-radius: 6px;
+            box-sizing: border-box;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+        }
+        #submit{
+            width: 25%;
+            border-radius: 6px;
+            background-color:#C49102;
+            color: black;
+            padding: 14px 20px;
+            font-size: 30px;
+            cursor: pointer;
+            border: none;
+            margin: 8px 0;
+        }
+        #btn1{
+            width: 25%;
+            border-radius: 6px;
+            background-color:#C49102;
+            color: black;
+            padding: 14px 20px;
+            font-size: 30px;
+            cursor: pointer;
+            border: none;
+            margin: 8px 0;
+
+        }
+</style>
+<body>
+    <form id = "add" method="POST" action = "/add">
+        <label>Roll no.</label>
+        <input type = "text" id = "text" name = "rollnumber"><br>
+        <label>Name</label>
+        <input type="text" id= "text" name = "name"><br>
+        <input id = "submit" type= "submit" value= "add">
+    </form>
+    <br><br>
+    <form id = "search" method="POST" action = "/search">
+        <label>Roll no.</label>
+        <input type = "text" id = "text" name = "rollnumber"><br>
+        <input id = "submit" type= "submit" value= "search"><br>
+    </form>
+    <br><br>
+    <button id = "btn1">Check All Data</button>
+    <div id = "container"></div>
+</body>
+<script>
+    var btn = document.getElementById("btn1")
+    var container = document.getElementById("container")
+    btn.addEventListener("click",function () {
+       console.log("clicked")
+       var ourRequest = new XMLHttpRequest();
+
+       ourRequest.open("get","http://localhost:5000/add")
+       ourRequest.onload = function () {
+       var ourData = JSON.parse(ourRequest.responseText)
+       console.log(ourData)
+       renderHTML(ourData)
+       
+      
+
+       };
+ourRequest.send();
+})
+function renderHTML(data){
+    var dataHTML = ""
+    for (i=0;i<data.length;i++){
+        dataHTML += "<p>"+ data[i].name +":" + data[i].rollnumber + ".</p>"
+
+    }
+    
+    container.insertAdjacentHTML("beforeend",dataHTML)
+}
+</script>
+</html>

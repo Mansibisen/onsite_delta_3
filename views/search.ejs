@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+     html{
+        background-color: #ccc;
+    }
+    #label{
+        font-size: 25px;
+        text-align: center;
+    }
+    #label1{
+        font-size: 25px;
+        text-align: center;
+
+    }
+    #form{
+        text-align: center;
+            margin-top: 100px;
+            margin-bottom: 100px;
+            font-size: 40px;
+    }
+    #text{
+            width:30%;
+            padding: 8px 10px;
+            border-radius: 3px;
+            box-sizing: border-box;
+            margin: 2px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+        }
+        #update{
+            width: 25%;
+            border-radius: 3px;
+            background-color:#C49102;
+            color: black;
+            padding: 8px 10px;
+            font-size: 30px;
+            cursor: pointer;
+            border: none;
+            margin: 2px 0;}
+            #update2{
+            width: 20%;
+            border-radius: 3px;
+            background-color:#C49102;
+            color: black;
+            padding: 8px 10px;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
+            margin: 2px 0;}
+            #updaterollbtn{
+                width: 20%;
+            border-radius: 3px;
+            background-color:#C49102;
+            color: black;
+            padding: 8px 10px;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
+            margin: 2px 0;
+
+            }
+        #deletebtn{
+            width: 25%;
+            border-radius: 3px;
+            background-color:#C49102;
+            color: black;
+            padding: 8px 10px;
+            font-size: 30px;
+            cursor: pointer;
+            border: none;
+            margin: 2px 0;
+
+        }
+        #box{
+            text-align: center;
+        }
+
+        
+</style>
+<body>
+    <div id = "box">
+    <label id = "label1">roll number</label><br>
+    <h3 id = "label"><%=result.rollnumber%></h3>
+    <label id = "label1">Name</label><br>
+    <h3 id = "label"><%=result.name%></h3></div>
+    <div id = "container"></div>
+        <input type="hidden" id = "delinput" name ="valueToDelete" value = <%=result.rollnumber%> >
+        <button id = "deletebtn">Delete</button>
+    
+    <form  id = "form" method = "POST" action = "/update">
+        <label id="label">name:</label>
+        <input name = "modifiedName" type = "text" id = "text2"><br>
+        <input type="hidden" id = "delinput2" name ="valueToupdate" value = <%=result.rollnumber%> >
+        <input type = "submit" id= "update2" value= "update the name">
+    </form>
+    <form  id = "form" method = "POST" action = "/update/roll">
+        <label id="label">roll number:</label>
+        <input name = "modifiedroll" type = "text" id = "text2"><br>
+        <input type="hidden" id = "delinput2" name ="oldname" value = <%=result.name%> >
+        <input type = "submit" id= "update2" value= "update the roll no.">
+    </form>
+
+    
+     
+
+    <form method = "POST" action = "/check">
+        <input type="hidden" id = "input3" name ="valueTocheck" value = <%=result.rollnumber%> >
+        <input type = "submit" id= "update" value= "checkdept">
+    </form>
+    
+
+</body>
+<script>
+    var btn = document.getElementById("deletebtn")
+    var container = document.getElementById("container")
+    var valueToDelete = document.getElementById("delinput").value
+    var pagecounter = 1
+    
+    btn.addEventListener("click",function () {
+       
+       var ourRequest = new XMLHttpRequest();
+
+       ourRequest.open("delete","http://localhost:5000/delete/"+valueToDelete)
+       ourRequest.onload = function () {
+       var ourData = JSON.parse(ourRequest.responseText)
+       console.log(ourData)
+       renderHTML(ourData)
+       pagecounter++;
+       if (pagecounter >1){
+        //hide the button
+    }
+
+       };
+ourRequest.send();
+})
+function renderHTML(data){
+    var dataHTML = ""
+    dataHTML += "<p>"+ data.deletedCount +"data is deleted "+".</p>"
+    container.insertAdjacentHTML("beforeend",dataHTML)
+}
+
+
+
+
+
+      
+    
+</script>
+</html>
